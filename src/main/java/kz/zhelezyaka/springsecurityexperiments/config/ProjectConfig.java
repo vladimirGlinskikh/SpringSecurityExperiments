@@ -2,18 +2,19 @@ package kz.zhelezyaka.springsecurityexperiments.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
 public class ProjectConfig extends WebSecurityConfigurerAdapter {
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    public UserDetailsService userDetailsService() {
         var userDetailsService = new InMemoryUserDetailsManager();
 
         var user = User.withUsername("Vladimir")
@@ -21,8 +22,7 @@ public class ProjectConfig extends WebSecurityConfigurerAdapter {
                 .authorities("read")
                 .build();
         userDetailsService.createUser(user);
-        auth.userDetailsService(userDetailsService)
-                .passwordEncoder(NoOpPasswordEncoder.getInstance());
+        return userDetailsService;
     }
 
     @Override
@@ -30,6 +30,11 @@ public class ProjectConfig extends WebSecurityConfigurerAdapter {
         http.httpBasic();
         http.authorizeRequests()
                 .anyRequest()
-                .authenticated();
+                .permitAll();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return NoOpPasswordEncoder.getInstance();
     }
 }
