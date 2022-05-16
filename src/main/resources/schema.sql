@@ -21,9 +21,7 @@ CREATE TABLE IF NOT EXISTS authorities
 );
 
 INSERT IGNORE INTO authorities VALUES (NULL, 'Vladimir', 'write');
-INSERT IGNORE INTO authorities VALUES (NULL, 'Svetlana', 'write');
 INSERT IGNORE INTO users VALUES (NULL, 'Vladimir', '123', '1');
-INSERT IGNORE INTO users VALUES (NULL, 'Svetlana', '124', '1');
 
 SELECT * FROM users;
 SELECT * FROM authorities;
